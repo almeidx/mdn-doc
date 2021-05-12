@@ -1,12 +1,15 @@
-import { NowRequest, NowResponse } from '@vercel/node';
-import mdn from '../util/mdn';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default async function search(req: NowRequest, res: NowResponse) {
+import { resolveInfo } from '../util/mdn';
+
+export default async function info(req: VercelRequest, res: VercelResponse) {
   const { l } = req.query;
-  if (!l) return res.status(400).json({ message: 'You need to pass the link query using the l parameter' });
+  if (typeof l !== 'string') {
+    return res.status(400).json({ message: "Missing 'link' query parameter." });
+  }
 
-  const data = await mdn.getInfo(l as string);
-  if (!data) return res.status(400).json({ message: 'The link you inputted was not valid' });
+  const data = await resolveInfo(l);
+  if (!data) return res.status(404).json({ message: 'Could not resolve info.' });
 
   return res.json(data);
 }

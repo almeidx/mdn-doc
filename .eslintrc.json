@@ -1,37 +1,78 @@
 {
+  "$schema": "http://json.schemastore.org/eslintrc",
   "env": {
     "es2021": true,
-    "node": true
+    "worker": true
   },
-  "extends": [
-    "airbnb-base"
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "plugins": [
-    "@typescript-eslint"
-  ],
-  "rules": {
-    "import/extensions": "off",
-    "no-param-reassign": "off",
-    "no-plusplus": "off"
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [
-          ".js",
-          ".ts"
-        ]
-      },
-    "typescript": {}
+  "extends": "marine/prettier/node",
+  "ignorePatterns": ["**/dist/*", "**/node_modules/*", ".yarn/*"],
+  "overrides": [
+    {
+      "files": "*.js",
+      "rules": {
+        "simple-import-sort/imports": 0
+      }
     }
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
   },
-  "ignorePatterns": [
-    "node_modules/*",
-    "dist/*"
-  ]
+  "plugins": ["simple-import-sort"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/indent": 0,
+    "@typescript-eslint/naming-convention": [
+      2,
+      {
+        "format": ["PascalCase", "UPPER_CASE", "camelCase"],
+        "leadingUnderscore": "allow",
+        "selector": "variable"
+      },
+      {
+        "format": ["PascalCase"],
+        "leadingUnderscore": "allow",
+        "selector": "typeLike"
+      },
+      {
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow",
+        "selector": "function"
+      }
+    ],
+    "@typescript-eslint/no-extraneous-class": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-unnecessary-condition": [
+      2,
+      { "allowConstantLoopConditions": true }
+    ],
+    "@typescript-eslint/space-before-function-paren": 0,
+    "no-implicit-coercion": 0,
+    "no-negated-condition": 0,
+    "prettier/prettier": [
+      2,
+      {
+        "endOfLine": "lf",
+        "printWidth": 120,
+        "quoteProps": "as-needed",
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "all",
+        "useTabs": false
+      }
+    ],
+    "simple-import-sort/exports": 2,
+    "simple-import-sort/imports": 2,
+    "sort-imports": 0,
+    "sort-keys": 2,
+    "sort-vars": 2,
+    "spaced-comment": [
+      1,
+      "always",
+      {
+        "line": {
+          "markers": ["#endregion", "#region", "/", "endregion", "region"]
+        }
+      }
+    ]
+  }
 }

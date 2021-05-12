@@ -1,12 +1,13 @@
-import { NowRequest, NowResponse } from '@vercel/node';
-import mdn from '../util/mdn';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default async function search(req: NowRequest, res: NowResponse) {
+import { searchDocs } from '../util/mdn';
+
+export default async function search(req: VercelRequest, res: VercelResponse) {
   const { q } = req.query;
-  if (!q) return res.status(400).json({ message: 'Missing ?q parameter' });
+  if (typeof q !== 'string') return res.status(400).json({ message: "Missing 'query' query parameter" });
 
-  const data = await mdn.search(q as string);
-  if (!Array.isArray(data) || !data.length) return res.status(404).json({ message: 'Could not find anything' });
+  const data = await searchDocs(q);
+  if (!Array.isArray(data) || !data.length) return res.status(404).json({ message: 'Could not find anything.' });
 
   return res.json(data);
 }
